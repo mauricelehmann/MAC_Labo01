@@ -30,3 +30,11 @@ According to Jordan Boyd-Graber (https://www.quora.com/What-should-be-done-first
 ## 2.2
 
 TODO : ??? rien compris...
+
+## 3
+## 1. Find out what is a “term vector” in Lucene vocabulary?
+From the Lucene doc (https://lucene.apache.org/core/3_6_0/api/core/org/apache/lucene/document/Field.TermVector.html) <br/>
+*A term vector is a list of the document's terms and their number of occurrences in that document.* <br />
+
+
+
