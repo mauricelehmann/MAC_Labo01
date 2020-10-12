@@ -1,5 +1,8 @@
 # MAC_Labo01
 
+
+## 2.1
+
 ### 1. What are the types of the fields in the index?
 - The path of the file : Stringfield
 - The last modified date of the file : Longpoint
@@ -22,3 +25,8 @@ Yes, it is not case sensitive, as it is said in the same documentation : <br/>
 It depend of what you want. Say you have "stemmed" words in your stopwords list, if you remove the stopwords after the stemming, it will remove a lot of words. <br/>
 According to Jordan Boyd-Graber (https://www.quora.com/What-should-be-done-first-stopwords-removal-or-stemming-Why-In-weka-should-I-perform-stemming-to-stopwords-list-so-the-word-abl-can-be-removed) : <br/>
 "Given the choice, I think it would be better to have unstemmed stopwords and apply it before stemming. This is more of an issue in highly inflected languages, where it's hard to create an unstemmed list of stopwords."
+
+
+## 2.2
+
+TODO : ??? rien compris...
