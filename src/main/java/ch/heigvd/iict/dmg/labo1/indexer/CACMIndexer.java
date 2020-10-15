@@ -1,11 +1,14 @@
 package ch.heigvd.iict.dmg.labo1.indexer;
 
+import ch.heigvd.iict.dmg.labo1.IndexPath;
 import ch.heigvd.iict.dmg.labo1.parsers.ParserListener;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
+import org.apache.lucene.document.*;
+import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.index.IndexableFieldType;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -36,7 +39,7 @@ public class CACMIndexer implements ParserListener {
 		if(similarity != null)
 			iwc.setSimilarity(similarity);
 		// 1.3. create index writer
-		Path path = FileSystems.getDefault().getPath("index");
+		Path path = FileSystems.getDefault().getPath(IndexPath.path);
 		try {
 			this.dir = FSDirectory.open(path);
 			this.indexWriter = new IndexWriter(dir, iwc);
@@ -49,9 +52,38 @@ public class CACMIndexer implements ParserListener {
 	public void onNewDocument(Long id, String authors, String title, String summary) {
 		Document doc = new Document();
 
-		// TODO student: add to the document "doc" the fields given in
+		// TODO <OK ? > student: add to the document "doc" the fields given in
 		// parameters. You job is to use the right Field and FieldType
 		// for these parameters.
+
+
+		//Maurice : Did that because the default summary value is set to null and not "" :/
+		summary =  summary == null ? summary = "" : summary;
+
+		//Maurice : Version with term vector enabled
+		FieldType ft = new FieldType();
+		ft.setIndexOptions(IndexOptions.DOCS);
+		ft.setStoreTermVectors(true);
+		//ft.setStoreTermVectorOffsets(true); //TODO : Maurice : enable ou pas?
+
+		Field idField = new Field("id", id.toString(), ft);
+		Field authorField = new Field("author", authors, ft);
+		Field titleField = new Field("title", title, ft);
+		Field summaryField = new Field("summary", summary, ft);
+
+		doc.add(idField);
+		doc.add(authorField);
+		doc.add(titleField);
+		doc.add(summaryField);
+
+
+		//Maurice : Version without term vector enabled
+		/*
+		doc.add(new NumericDocValuesField("id", id));
+		doc.add(new StringField("Authors", authors, Field.Store.NO));
+		doc.add(new TextField("Title", title, Field.Store.NO));
+		doc.add(new TextField("Summary", summary, Field.Store.YES));
+		 */
 
 		try {
 			this.indexWriter.addDocument(doc);

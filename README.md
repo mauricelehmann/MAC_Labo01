@@ -36,5 +36,34 @@ TODO : ??? rien compris...
 From the Lucene doc (https://lucene.apache.org/core/3_6_0/api/core/org/apache/lucene/document/Field.TermVector.html) <br/>
 *A term vector is a list of the document's terms and their number of occurrences in that document.* <br />
 
+## 2. What should be added to the code to have access to the “term vector” in the index?
+We can build our field with the class Field, wich use an FieldType object. (We actually use subclasses, eg. NumericDocValuesField)
+The FieldType can turn true or false the storage  of the terms vector with the setStoreTermVectors(true || false) method. 
 
+## 3. Compare the size of the index before and after enabling “term vector”, discuss the results
+So with Luke, we can see that the index is composed of 3203 documents and 26'602 terms. <br/>
+We can also get the number of document with the IndexReader class, by the method indexReader.numDocs() <br />
+If we enable term vector in our field, we get the same amount of documents wich is normal because the amount of terms didn't changed, we just added additional informations in the vectors.
+
+## 3.2
+
+### 2. Explain the difference of these five analyzers
+#### WhitespaceAnalyzer
+The WhitespaceAnalyzer use the WhitespaceTokenizer.It is a tokenizer that *divides text at whitespace. Adjacent sequences of non-Whitespace characters form tokens.*
+(https://tool.oschina.net/uploads/apidocs/lucene-3.6.0/org/apache/lucene/analysis/WhitespaceAnalyzer.html)
+If we look with Luke, we can see that the WhitespaceAnalyzer give us the same amount of documents , but 38'125 terms (vs 26'602 terms for the standard analyser).
+
+#### EnglishAnalyzer
+Same as the StandardAnalyser, but will use the default stop words (by the method getDefaultStopSet()). Or with a given CharArraySet of stop words. <br/>
+With Luke, it give us 25'716 terms.
+
+#### ShingleAnalyzerWrapper 1 (using shingle size 1 and 2)
+This analyser wrap another analyser. By default, it wrap a StandardAnalyser. It will generates more terms because in addition generating a single terms for a word for example, 
+it will generate another term for all the couple of 2 terms. <br/>
+Luke give us a total of 126'862 terms.
+
+#### ShingleAnalyzerWrapper (using shingle size 1 and 3, but not 2)
+Same as the previous one, but will generate single word terms plus three words terms for a total of 165'716 terms. <br/>
+
+#### StopAnalyzer
 

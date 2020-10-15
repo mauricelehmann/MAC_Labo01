@@ -1,5 +1,6 @@
 package ch.heigvd.iict.dmg.labo1.queries;
 
+import ch.heigvd.iict.dmg.labo1.IndexPath;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -20,7 +21,7 @@ public class QueriesPerformer {
 
 	public QueriesPerformer(Analyzer analyzer, Similarity similarity) {
 		this.analyzer = analyzer;
-		Path path = FileSystems.getDefault().getPath("index");
+		Path path = FileSystems.getDefault().getPath(IndexPath.path);
 		Directory dir;
 		try {
 			dir = FSDirectory.open(path);
@@ -38,6 +39,9 @@ public class QueriesPerformer {
 		// This methods print the top ranking term for a field.
 		// See "Reading Index".
 	    System.out.println("Top ranking terms for field ["  + field +"] are: ");
+
+		System.out.println(indexReader.numDocs());
+
 	}
 	
 	public void query(String q) {
