@@ -21,7 +21,7 @@ public class Main {
 
 
 		//Maurice : made a global path for the indexes repo
-		IndexPath.path = "index/standard";
+		IndexPath.path = "index/english";
 
 		// 1.1. create an analyzer
 		Analyzer analyser = getAnalyzer();
@@ -48,7 +48,7 @@ public class Main {
 		QueriesPerformer queriesPerformer = new QueriesPerformer(analyser, similarity);
 
 		// Section "Reading Index"
-		readingIndex(queriesPerformer);
+		//readingIndex(queriesPerformer);
 
 		// Section "Searching"
 		searching(queriesPerformer);
@@ -58,15 +58,13 @@ public class Main {
 	}
 
 	private static void readingIndex(QueriesPerformer queriesPerformer) {
-		queriesPerformer.printTopRankingTerms("authors", 10);
+		queriesPerformer.printTopRankingTerms("author", 10);
 		queriesPerformer.printTopRankingTerms("title", 10);
-
 	}
 
 	private static void searching(QueriesPerformer queriesPerformer) {
 		// Example
 		queriesPerformer.query("compiler program");
-
 		// TODO student
         // queriesPerformer.query(<containing the term Information Retrieval>);
 		// queriesPerformer.query(<containing both Information and Retrieval>);
@@ -84,9 +82,9 @@ public class Main {
 		// For the next part "Using different Analyzers" modify this method
 		// and return the appropriate Analyzers asked.
 
-		StandardAnalyzer analyzer = new StandardAnalyzer();
+		//StandardAnalyzer analyzer = new StandardAnalyzer();
 		//WhitespaceAnalyzer analyzer = new WhitespaceAnalyzer();
-		//EnglishAnalyzer analyzer = new EnglishAnalyzer();
+		EnglishAnalyzer analyzer = new EnglishAnalyzer();
 
 		//Shingler of size 1 and 2
 		//ShingleAnalyzerWrapper analyzer = new ShingleAnalyzerWrapper(2, 2);

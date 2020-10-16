@@ -63,7 +63,9 @@ public class CACMIndexer implements ParserListener {
 		//Maurice : Version with term vector enabled
 		FieldType ft = new FieldType();
 		ft.setIndexOptions(IndexOptions.DOCS);
+		ft.setTokenized(true);
 		ft.setStoreTermVectors(true);
+		ft.freeze();
 		//ft.setStoreTermVectorOffsets(true); //TODO : Maurice : enable ou pas?
 
 		Field idField = new Field("id", id.toString(), ft);

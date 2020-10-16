@@ -88,3 +88,53 @@ We can see that the more of indexed terms we have, to more disk space and proces
 In conclusion we can assume that the more pertinent "top frequent terms" result is when we use the stop word list. <br/>
 
 ## 3.3 Reading Index
+
+### 1. What is the author with the highest number of publications? How many publications does he/she have?
+We choose to use the stop-words analyzer because otherwise we'll get only firstname initials in the top rank. <br/>
+With that configuration, we get : <br/>
+Value : jr <br/>
+Freq. : 125 <br/>
+<br/>
+Value : smith <br/> 
+Freq. : 43 <br/>
+<br/>
+Value : thacher<br/>
+Freq. : 41<br/>
+<br/>
+
+### 2. List the top 10 terms in the title field with their frequency.
+Top ranking terms for field [title] are: <br/>
+Value : algorithm <br/>
+Freq. : 963<br/>
+<br/>
+Value : computer<br/>
+Freq. : 260<br/>
+<br/>
+Value : system<br/>
+Freq. : 172<br/>
+<br/>
+Value : programming<br/>
+Freq. : 154<br/>
+<br/>
+Value : method<br/>
+Freq. : 125<br/>
+<br/>
+Value : data<br/>
+Freq. : 110<br/>
+<br/>
+Value : systems<br/>
+Freq. : 108<br/>
+<br/>
+Value : language<br/>
+Freq. : 99<br/>
+<br/>
+Value : program<br/>
+Freq. : 93<br/>
+<br/>
+Value : matrix<br/>
+Freq. : 82<br/>
+<br/>
+
+## 3.4 Search
+
+
