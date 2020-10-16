@@ -66,4 +66,25 @@ Luke give us a total of 126'862 terms.
 Same as the previous one, but will generate single word terms plus three words terms for a total of 165'716 terms. <br/>
 
 #### StopAnalyzer
+The StopAnalyzer use a stop words list for the analysis. It will not tokenize the word wich are present in the list. <br/>
+In our case, we used the "common_words.txt" for the stop words. <br/>
+The results are for this analyzer : 24'025 terms <br/>
 
+## 3. Analyzer informations
+
+|                              | Indexed documents | Indexed terms | Indexed terms in summary field | Top 10 frequent terms of summary field | Size of the index on disk | Time for indexing |
+|------------------------------|-------------------|---------------|--------------------------------|----------------------------------------|---------------------------|-------------------|
+| StandardAnalyzer             |  3203             | 29'901        | 20'005                   | 1.the 2.of 3.a 4.is 5.and 6.to 7.in 8.for 9.are 10.this    |   1.12 Mo  |  4581 ms|
+| WhitespaceAnalyzer           |   3203            | 38'125        | 26'821                   | 1.of 2.the 3.is 4.a 5.and 6.to 7.in 8.for 9.The 10.are |         1.28 Mo       |      6032 ms       |
+| EnglishAnalyzer              |    3203           | 25'716        | 16'724                     | 1.us 2.which 3. comput 4. program 5.system 6.present 7.describ 8.paper 9.method 10.can | 924 Ko|    4279 ms   |
+| ShingleAnalyzerWrapper 1 & 2 |  3203             | 126'862       | 100'768                     | 1.the 2.of 3.a 4.is 5.and 6.to 7.in 8.for 9.are 10.of the   |          3.04 Mo                 |    7696 ms |
+| ShingleAnalyzerWrapper 1 & 3 |  3203             | 165'716       | 138'090                     | 1.the 2.of 3.a 4.is 5.and 6.to 7.in 8.for 9.are 10.this     |          4.02 Mo                 |   8579 ms |
+| StopAnalyzer                 | 3203              | 24'025        | 18'342                | 1.system 2.comput 3.paper 4.presented 5.time 6.method 7.program 8.data 9.algorithm 10.discussed  |     912 Ko           | 4308 ms|
+
+## 4. Make 3 concluding statements bases on the above observations
+First we can see that  the number of document never change, which is pretty normal when we are always using the same files with the same amount of line. <br />
+On the other hand, the indexed terms can vary a lot. When we use a stop words list, it reduce a lot the number of terms. And when we use the shingle wrapper, it generate a lot more combinaison of term wich increase the number of terms. <br/>
+We can see that the more of indexed terms we have, to more disk space and process time it take. <br/>
+In conclusion we can assume that the more pertinent "top frequent terms" result is when we use the stop word list. <br/>
+
+## 3.3 Reading Index
