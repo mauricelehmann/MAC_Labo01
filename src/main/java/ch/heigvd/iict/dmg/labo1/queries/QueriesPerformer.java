@@ -9,14 +9,11 @@ import org.apache.lucene.misc.HighFreqTerms;
 import org.apache.lucene.misc.TermStats;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.*;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import javax.management.QueryEval;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -78,19 +75,17 @@ public class QueriesPerformer {
 			// 2.1. create query parser
 			QueryParser parser = new QueryParser("title", analyzer);
 			Query query = parser.parse(q);
-			IndexSearcher indexSearcher = new IndexSearcher(indexReader);
-			ScoreDoc[] hits = indexSearcher.search(query, 10).scoreDocs;
 
+			TopDocs topdocs = indexSearcher.search(query, 10);
+			ScoreDoc[] hits = topdocs.scoreDocs;
 			System.out.println("Searching for [" + q +"]");
 			// 3.4. retrieve results
-			System.out.println("Results found: " + hits.length);
+			System.out.println("Results found: " + topdocs.totalHits);
 
 			for (ScoreDoc hit : hits) {
 				Document doc = indexSearcher.doc(hit.doc);
 				System.out.println(doc.get("id") + ": " + doc.get("title") + " (" + hit.score + ")");
 			}
-
-
 		} catch (ParseException | IOException e) {
 			e.printStackTrace();
 		}

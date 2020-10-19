@@ -10,6 +10,7 @@ import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.shingle.ShingleAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.search.similarities.ClassicSimilarity;
 import org.apache.lucene.search.similarities.Similarity;
 
 import java.io.IOException;
@@ -27,10 +28,10 @@ public class Main {
 		Analyzer analyser = getAnalyzer();
 
 		// TODO student "Tuning the Lucene Score"
+		//Similarity similarity = new ClassicSimilarity();
 		Similarity similarity = new MySimilarity();
-		
-		CACMIndexer indexer = new CACMIndexer(analyser, similarity);
 
+		CACMIndexer indexer = new CACMIndexer(analyser, similarity);
 
 		//Begin Time measure
 		long begin = System.currentTimeMillis();
@@ -48,7 +49,7 @@ public class Main {
 		QueriesPerformer queriesPerformer = new QueriesPerformer(analyser, similarity);
 
 		// Section "Reading Index"
-		//readingIndex(queriesPerformer);
+		readingIndex(queriesPerformer);
 
 		// Section "Searching"
 		searching(queriesPerformer);
@@ -64,15 +65,25 @@ public class Main {
 
 	private static void searching(QueriesPerformer queriesPerformer) {
 		// Example
-		queriesPerformer.query("compiler program");
 		// TODO student
-        // queriesPerformer.query(<containing the term Information Retrieval>);
-		// queriesPerformer.query(<containing both Information and Retrieval>);
+        // queriesPerformer	.query(<containing the term Information Retrieval>);
+        // queriesPerformer.query(<containing both Information and Retrieval>);
         // and so on for all the queries asked on the instructions...
         //
-		// Reminder: it must print the total number of results and
-		// the top 10 results.
-	}
+        // Reminder: it must print the total number of results and
+        // the top 10 results.
+
+		//3.4
+        //queriesPerformer.query("Information Retrieval");
+        //queriesPerformer.query("Information AND Retrieval");
+        //queriesPerformer.query("Retrieval AND (Information NOT Database)");
+        //queriesPerformer.query("Info*");
+        //queriesPerformer.query("Information Retrieval~5");
+
+
+		//3.5
+        queriesPerformer.query("compiler program");
+    }
 
 	private static Analyzer getAnalyzer() {
 	    // TODO <OK ?> student... For the part "Indexing and Searching CACM collection

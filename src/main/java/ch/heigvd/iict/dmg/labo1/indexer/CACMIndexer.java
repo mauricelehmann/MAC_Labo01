@@ -8,7 +8,6 @@ import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.index.IndexableFieldType;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -52,10 +51,9 @@ public class CACMIndexer implements ParserListener {
 	public void onNewDocument(Long id, String authors, String title, String summary) {
 		Document doc = new Document();
 
-		// TODO <OK ? > student: add to the document "doc" the fields given in
+		// TODO student: add to the document "doc" the fields given in
 		// parameters. You job is to use the right Field and FieldType
 		// for these parameters.
-
 
 		//Maurice : Did that because the default summary value is set to null and not "" :/
 		summary =  summary == null ? summary = "" : summary;
@@ -64,9 +62,9 @@ public class CACMIndexer implements ParserListener {
 		FieldType ft = new FieldType();
 		ft.setIndexOptions(IndexOptions.DOCS);
 		ft.setTokenized(true);
+		ft.setStored(true);
 		ft.setStoreTermVectors(true);
 		ft.freeze();
-		//ft.setStoreTermVectorOffsets(true); //TODO : Maurice : enable ou pas?
 
 		Field idField = new Field("id", id.toString(), ft);
 		Field authorField = new Field("author", authors, ft);

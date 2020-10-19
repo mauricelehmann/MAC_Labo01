@@ -1,8 +1,8 @@
-# MAC_Labo01
+# MAC Labo01
+### Maurice Lehmann & Alexandre Simik
 
 
 ## 2.1
-
 ### 1. What are the types of the fields in the index?
 - The path of the file : Stringfield
 - The last modified date of the file : Longpoint
@@ -26,10 +26,6 @@ It depend of what you want. Say you have "stemmed" words in your stopwords list,
 According to Jordan Boyd-Graber (https://www.quora.com/What-should-be-done-first-stopwords-removal-or-stemming-Why-In-weka-should-I-perform-stemming-to-stopwords-list-so-the-word-abl-can-be-removed) : <br/>
 "Given the choice, I think it would be better to have unstemmed stopwords and apply it before stemming. This is more of an issue in highly inflected languages, where it's hard to create an unstemmed list of stopwords."
 
-
-## 2.2
-
-TODO : ??? rien compris...
 
 ## 3
 ## 1. Find out what is a “term vector” in Lucene vocabulary?
@@ -90,51 +86,194 @@ In conclusion we can assume that the more pertinent "top frequent terms" result 
 ## 3.3 Reading Index
 
 ### 1. What is the author with the highest number of publications? How many publications does he/she have?
-We choose to use the stop-words analyzer because otherwise we'll get only firstname initials in the top rank. <br/>
-With that configuration, we get : <br/>
-Value : jr <br/>
-Freq. : 125 <br/>
-<br/>
-Value : smith <br/> 
-Freq. : 43 <br/>
-<br/>
-Value : thacher<br/>
-Freq. : 41<br/>
-<br/>
+We choose to use the stop-words analyzer because otherwise we'll get only firstname initials in the top rank. 
+With that configuration, we get : 
+```
+Value : jr 
+Freq. : 125 
+
+Value : smith  
+Freq. : 43 
+
+Value : thacher
+Freq. : 41
+```
 
 ### 2. List the top 10 terms in the title field with their frequency.
-Top ranking terms for field [title] are: <br/>
-Value : algorithm <br/>
-Freq. : 963<br/>
-<br/>
-Value : computer<br/>
-Freq. : 260<br/>
-<br/>
-Value : system<br/>
-Freq. : 172<br/>
-<br/>
-Value : programming<br/>
-Freq. : 154<br/>
-<br/>
-Value : method<br/>
-Freq. : 125<br/>
-<br/>
-Value : data<br/>
-Freq. : 110<br/>
-<br/>
-Value : systems<br/>
-Freq. : 108<br/>
-<br/>
-Value : language<br/>
-Freq. : 99<br/>
-<br/>
-Value : program<br/>
-Freq. : 93<br/>
-<br/>
-Value : matrix<br/>
-Freq. : 82<br/>
-<br/>
+
+```
+Top ranking terms for field [title] are: 
+Value : algorithm 
+Freq. : 963
+
+Value : computer
+Freq. : 260
+
+Value : system
+Freq. : 172
+
+Value : programming
+Freq. : 154
+
+Value : method
+Freq. : 125
+
+Value : data
+Freq. : 110
+
+Value : systems
+Freq. : 108
+
+Value : language
+Freq. : 99
+
+Value : program
+Freq. : 93
+
+Value : matrix
+Freq. : 82
+```
 
 ## 3.4 Search
+```
+public void query(String q) {
+    try {
+        // 2.1. create query parser
+        QueryParser parser = new QueryParser("title", analyzer);
+        Query query = parser.parse(q);
+
+        IndexSearcher indexSearcher = new IndexSearcher(indexReader);
+        TopDocs topdocs = indexSearcher.search(query, 10);
+        ScoreDoc[] hits = topdocs.scoreDocs;
+        System.out.println("Searching for [" + q +"]");
+        // 3.4. retrieve results
+        System.out.println("Results found: " + topdocs.totalHits);
+
+        for (ScoreDoc hit : hits) {
+            Document doc = indexSearcher.doc(hit.doc);
+            System.out.println(doc.get("id") + ": " + doc.get("title") + " (" + hit.score + ")");
+        }
+    } catch (ParseException | IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### 1. Publications containing the term “Information Retrieval”.
+
+```
+Searching for [Information Retrieval] 
+Results found: 86 hits 
+634: Manipulation of Trees in Information Retrieval* (4.2585773) 
+657: Information Structures for Processing and Retrieving (4.2585773)
+891: Everyman's Information Retrieval System (4.2585773)
+2516: Hierarchical Storage in Information Retrieval (4.2585773)
+292: An Information Retrieval Language for Legal Studies (3.930503)
+651: A Survey of Languages and Systems for Information Retrieval (3.930503)
+1032: Theoretical Considerations in Information Retrieval Systems (3.930503)
+275: Dynamic Storage Allocation for an Information Retrieval System (3.6493618)
+2070: A Formal System for Information Retrieval from Files (3.6493618)
+2114: A Formal System for Information Retrieval from Files (3.6493618)
+```
+### 2. Publications containing both “Information” and “Retrieval”.
+```
+Searching for [Information AND Retrieval]
+Results found: 17 hits
+634: Manipulation of Trees in Information Retrieval* (4.2585773)
+657: Information Structures for Processing and Retrieving (4.2585773)
+891: Everyman's Information Retrieval System (4.2585773)
+2516: Hierarchical Storage in Information Retrieval (4.2585773)
+292: An Information Retrieval Language for Legal Studies (3.930503)
+651: A Survey of Languages and Systems for Information Retrieval (3.930503)
+1032: Theoretical Considerations in Information Retrieval Systems (3.930503)
+275: Dynamic Storage Allocation for an Information Retrieval System (3.6493618)
+2070: A Formal System for Information Retrieval from Files (3.6493618)
+2114: A Formal System for Information Retrieval from Files (3.6493618)
+```
+### 3. Publications containing at least the term “Retrieval” and, possibly “Information” but not “Database”.
+```
+Searching for [Retrieval AND (Information NOT Database)]
+Results found: 17 hits
+634: Manipulation of Trees in Information Retrieval* (4.2585773)
+657: Information Structures for Processing and Retrieving (4.2585773)
+891: Everyman's Information Retrieval System (4.2585773)
+2516: Hierarchical Storage in Information Retrieval (4.2585773)
+292: An Information Retrieval Language for Legal Studies (3.930503)
+651: A Survey of Languages and Systems for Information Retrieval (3.930503)
+1032: Theoretical Considerations in Information Retrieval Systems (3.930503)
+275: Dynamic Storage Allocation for an Information Retrieval System (3.6493618)
+2070: A Formal System for Information Retrieval from Files (3.6493618)
+2114: A Formal System for Information Retrieval from Files (3.6493618)
+```
+### 4. Publications containing a term starting with “Info”.
+```
+Searching for [Info*]
+Results found: 78 hits
+208: An Introduction to Information Processing Language V (1.0)
+239: Inefficiency of the Use of Boolean Functionsfor Information Retrieval Systems (1.0)
+275: Dynamic Storage Allocation for an Information Retrieval System (1.0)
+292: An Information Retrieval Language for Legal Studies (1.0)
+397: A Card Format for Reference Files in Information Processing (1.0)
+616: An Information Algebra - Phase I Report-LanguageStructure Group of the CODASYL Development Committee (1.0)
+634: Manipulation of Trees in Information Retrieval* (1.0)
+651: A Survey of Languages and Systems for Information Retrieval (1.0)
+652: Use of Semantic Structure in Information Systems (1.0)
+656: An Information System With The Ability To Extract Intelligence From Data (1.0)
+```
+### 5. Publications containing the term “Information” close to “Retrieval” (max distance 5)
+```
+Searching for [Information Retrieval~5]
+Results found: 87 hits
+634: Manipulation of Trees in Information Retrieval* (3.6113107)
+657: Information Structures for Processing and Retrieving (3.6113107)
+891: Everyman's Information Retrieval System (3.6113107)
+2516: Hierarchical Storage in Information Retrieval (3.6113107)
+292: An Information Retrieval Language for Legal Studies (3.3331008)
+651: A Survey of Languages and Systems for Information Retrieval (3.3331008)
+1032: Theoretical Considerations in Information Retrieval Systems (3.3331008)
+275: Dynamic Storage Allocation for an Information Retrieval System (3.0946908)
+2070: A Formal System for Information Retrieval from Files (3.0946908)
+2114: A Formal System for Information Retrieval from Files (3.0946908)
+```
+
+## 3.5 Tuning the Lucene Score
 
 
+#### With ClassicSimilarity class
+```
+Analyze took : 2261 ms
+Searching for [compiler program]
+Results found: 354 hits
+3189: An Algebraic Compiler for the FORTRAN Assembly Program (3.0708408)
+187: Compiling Connectives (2.5525208)
+1676: The LRLTRAN Compiler (2.5525208)
+1173: The Performance of a System for Automatic Segmentationof Programs Within an ALGOL Compiler (GIERALGOL) (2.3474622)
+364: On the Compilation of Subscripted Variables (2.3200622)
+437: Compiling Matrix Operations (2.3200622)
+1454: A Simple User-Oriented Compiler Source Languagefor Programming Automatic Test Equipment (2.216906)
+123: Compilation for Two Computers with NELIAC (2.1264093)
+409: CL-1, An Environment for a Compiler (2.1264093)
+413: A Basic Compiler for Arithmetic Expressions (2.1264093)
+```
+
+#### With MySimilarity class
+```
+Analyze took : 3496 ms
+Searching for [compiler program]
+Results found: 354 hits
+1173: The Performance of a System for Automatic Segmentationof Programs Within an ALGOL Compiler (GIERALGOL) (8.481136)
+1454: A Simple User-Oriented Compiler Source Languagefor Programming Automatic Test Equipment (8.481136)
+3189: An Algebraic Compiler for the FORTRAN Assembly Program (8.481136)
+61: IBM 709 Tape Matrix Compiler (5.139705)
+98: The Arithmetic Translator-Compiler ofthe IBM FORTRAN Automatic Coding System (5.139705)
+100: Recursive Subscripting Compilers and List-Types Memories (5.139705)
+123: Compilation for Two Computers with NELIAC (5.139705)
+187: Compiling Connectives (5.139705)
+205: Macro Instruction Extensions of Compiler Languages (5.139705)
+280: A Preplanned Approach to a Storage Allocating Compiler (5.139705)
+```
+
+#### 5. Describe the effect of using the new parameters.
+Since we change the lengthNorm() method in our custom Similarity class to always return one, the computation won't take the number of terms in consideration.
+<br/>We also can see that we have increase a lot the final score. In the ClassicSimilarity , the tf() method is squaring the frequency, while in our custom class, we apply a log on it.
+ 
