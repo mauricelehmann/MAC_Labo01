@@ -141,8 +141,7 @@ public void query(String q) {
         // 2.1. create query parser
         QueryParser parser = new QueryParser("title", analyzer);
         Query query = parser.parse(q);
-
-        IndexSearcher indexSearcher = new IndexSearcher(indexReader);
+        
         TopDocs topdocs = indexSearcher.search(query, 10);
         ScoreDoc[] hits = topdocs.scoreDocs;
         System.out.println("Searching for [" + q +"]");
