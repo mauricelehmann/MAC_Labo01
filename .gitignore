@@ -3,3 +3,8 @@
 .idea/
 *.iml
 target/
+
+# VsCode
+.settings/
+.project
+.classpath
