@@ -135,7 +135,7 @@ Freq. : 82
 ```
 
 ## 3.4 Search
-```
+``` Java
 public void query(String q) {
     try {
         // 2.1. create query parser
